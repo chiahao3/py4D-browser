@@ -241,19 +241,3 @@ def complex_to_Lab(
         rgb = lab2rgb(Lab)
 
     return rgb
-
-def apply_flips_to_diffraction_image(diffraction_image, flip_settings):
-    
-    flipud = flip_settings["flipud"]
-    fliplr = flip_settings["fliplr"]
-    transpose = flip_settings["transpose"]
-
-    # Apply flips
-    if flipud:
-        diffraction_image = np.flipud(diffraction_image)
-    if fliplr:
-        diffraction_image = np.fliplr(diffraction_image)
-    if transpose:
-        diffraction_image = diffraction_image.T
-
-    return diffraction_image

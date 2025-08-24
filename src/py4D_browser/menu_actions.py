@@ -371,7 +371,32 @@ def find_calibrations(dset: h5py.Dataset):
 def set_diffraction_flips(self):
     dialog = DiffractionFlipsDialog(self, self.flip_settings)  # Pass current flip settings
     if dialog.exec_() == QDialog.Accepted:
-        values = dialog.get_values()
-        print(f"Diffraction flips set to: {values}")
-        self.flip_settings = values
-        self._render_diffraction_image(reset=True)  # Render diffraction image immediately
+        new_flip_settings = dialog.get_values()
+        print(f"Diffraction flips set to: {new_flip_settings}")
+        
+        # Note: There's a .T transpose at every final display of datacube in update_views
+        # So we need to adjust accordingly for the flipping axes
+        
+        #  Apply if the flip settings are different (Nslow, Nfast, Ky, Kx)
+        if new_flip_settings != self.flip_settings:
+            # Revert current flips in reverse order if they're non-zero
+            if self.flip_settings["transpose"]:
+                self.datacube.data = np.transpose(self.datacube.data, (0, 1, 3, 2))
+            if self.flip_settings["fliplr"]:
+                self.datacube.data = np.flip(self.datacube.data, axis=3)
+            if self.flip_settings["flipud"]:
+                self.datacube.data = np.flip(self.datacube.data, axis=2)
+        
+            # Apply the new flips       
+            if new_flip_settings["flipud"]:
+                self.datacube.data = np.flip(self.datacube.data, axis=2)
+            if new_flip_settings["fliplr"]:
+                self.datacube.data = np.flip(self.datacube.data, axis=3)
+            if new_flip_settings["transpose"]:
+                self.datacube.data = np.transpose(self.datacube.data, (0, 1, 3, 2))
+
+            # Update attributes and views
+            self.flip_settings = new_flip_settings
+            self.update_scalebars()
+            self.update_diffraction_space_view(reset=True)
+            self.update_real_space_view(reset=True)
