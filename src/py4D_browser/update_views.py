@@ -12,6 +12,7 @@ from py4D_browser.utils import (
     pg_point_roi,
     make_detector,
     complex_to_Lab,
+    apply_flips_to_diffraction_image,
     StatusBarWriter,
     DetectorShape,
     DetectorMode,
@@ -480,6 +481,9 @@ def _render_diffraction_image(self, reset=False):
 
     auto_level = reset or self.diffraction_rescale_button.latched
 
+    # Set the diffraction pattern flip
+    new_view = apply_flips_to_diffraction_image(new_view, self.flip_settings)
+    
     self.diffraction_space_widget.setImage(
         new_view.T,
         autoLevels=False,

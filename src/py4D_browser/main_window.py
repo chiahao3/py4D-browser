@@ -51,6 +51,7 @@ class DataViewer(QMainWindow):
         reshape_data,
         set_datacube,
         update_scalebars,
+        set_diffraction_flips
     )
 
     from py4D_browser.update_views import (
@@ -136,6 +137,13 @@ class DataViewer(QMainWindow):
         if os.environ.get("PY4DGUI_DEBUG"):
             pg.dbg()
 
+        # Initialize flip settings
+        self.flip_settings = {
+            "flipud": 0,
+            "fliplr": 0,
+            "transpose": 0,
+        }        
+
     def setup_menus(self):
         self.menu_bar = self.menuBar()
 
@@ -201,6 +209,15 @@ class DataViewer(QMainWindow):
                 partial(self.export_virtual_image, method, "diffraction")
             )
 
+        # Orientation menu
+        self.orientation_menu = QMenu("&Orientation", self)
+        self.menu_bar.addMenu(self.orientation_menu)
+        
+        # Set Diffraction Flips action
+        self.set_diffraction_flips_action = QAction("Set Diffraction Flips", self)
+        self.set_diffraction_flips_action.triggered.connect(self.set_diffraction_flips)
+        self.orientation_menu.addAction(self.set_diffraction_flips_action)
+        
         # Scaling Menu
         self.scaling_menu = QMenu("&Scaling", self)
         self.menu_bar.addMenu(self.scaling_menu)

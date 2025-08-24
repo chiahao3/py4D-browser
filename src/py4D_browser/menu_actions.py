@@ -1,12 +1,12 @@
 from numbers import Real
 import py4DSTEM
-from PyQt5.QtWidgets import QFileDialog, QMessageBox
+from PyQt5.QtWidgets import QFileDialog, QMessageBox, QDialog
 import h5py
 import os
 import numpy as np
 import matplotlib.pyplot as plt
 from py4D_browser.help_menu import KeyboardMapMenu
-from py4D_browser.dialogs import ResizeDialog
+from py4D_browser.dialogs import ResizeDialog, DiffractionFlipsDialog
 from py4DSTEM.io.filereaders import read_arina
 
 
@@ -367,3 +367,11 @@ def find_calibrations(dset: h5py.Dataset):
         )
 
     return R_size, R_units, Q_size, Q_units
+
+def set_diffraction_flips(self):
+    dialog = DiffractionFlipsDialog(self, self.flip_settings)  # Pass current flip settings
+    if dialog.exec_() == QDialog.Accepted:
+        values = dialog.get_values()
+        print(f"Diffraction flips set to: {values}")
+        self.flip_settings = values
+        self._render_diffraction_image(reset=True)  # Render diffraction image immediately

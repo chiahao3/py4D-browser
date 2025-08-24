@@ -116,3 +116,58 @@ class ResizeDialog(QDialog):
                 return i, self.N // i
 
         raise ValueError("Factor finding failed, frustratingly.")
+
+class DiffractionFlipsDialog(QDialog):
+    def __init__(self, parent=None, current_settings=None):
+        super().__init__(parent)
+
+        self.setWindowTitle("Set Diffraction Flips")
+        self.resize(300, 200)
+
+        layout = QVBoxLayout(self)
+
+        # Flipud input
+        flipud_layout = QHBoxLayout()
+        flipud_layout.addWidget(QLabel("Flip Up-Down (0 or 1):"))
+        self.flipud_spinbox = QSpinBox()
+        self.flipud_spinbox.setRange(0, 1)
+        self.flipud_spinbox.setValue(current_settings.get("flipud", 0))  # Set current value
+        flipud_layout.addWidget(self.flipud_spinbox)
+        layout.addLayout(flipud_layout)
+
+        # Fliplr input
+        fliplr_layout = QHBoxLayout()
+        fliplr_layout.addWidget(QLabel("Flip Left-Right (0 or 1):"))
+        self.fliplr_spinbox = QSpinBox()
+        self.fliplr_spinbox.setRange(0, 1)
+        self.fliplr_spinbox.setValue(current_settings.get("fliplr", 0))  # Set current value
+        fliplr_layout.addWidget(self.fliplr_spinbox)
+        layout.addLayout(fliplr_layout)
+
+        # Transpose input
+        transpose_layout = QHBoxLayout()
+        transpose_layout.addWidget(QLabel("Transpose (0 or 1):"))
+        self.transpose_spinbox = QSpinBox()
+        self.transpose_spinbox.setRange(0, 1)
+        self.transpose_spinbox.setValue(current_settings.get("transpose", 0))  # Set current value
+        transpose_layout.addWidget(self.transpose_spinbox)
+        layout.addLayout(transpose_layout)
+
+        # Buttons
+        button_layout = QHBoxLayout()
+        self.ok_button = QPushButton("OK")
+        self.ok_button.clicked.connect(self.accept)
+        button_layout.addWidget(self.ok_button)
+
+        self.cancel_button = QPushButton("Cancel")
+        self.cancel_button.clicked.connect(self.reject)
+        button_layout.addWidget(self.cancel_button)
+
+        layout.addLayout(button_layout)
+
+    def get_values(self):
+        return {
+            "flipud": self.flipud_spinbox.value(),
+            "fliplr": self.fliplr_spinbox.value(),
+            "transpose": self.transpose_spinbox.value(),
+        }
