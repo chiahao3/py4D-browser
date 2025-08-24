@@ -128,29 +128,26 @@ class DiffractionFlipsDialog(QDialog):
 
         # Flipud input
         flipud_layout = QHBoxLayout()
-        flipud_layout.addWidget(QLabel("Flip Up-Down (0 or 1):"))
-        self.flipud_spinbox = QSpinBox()
-        self.flipud_spinbox.setRange(0, 1)
-        self.flipud_spinbox.setValue(current_settings.get("flipud", 0))  # Set current value
-        flipud_layout.addWidget(self.flipud_spinbox)
+        flipud_layout.addWidget(QLabel("Flip Up-Down:"))
+        self.flipud_checkbox = QCheckBox()
+        self.flipud_checkbox.setChecked(bool(current_settings.get("flipud", False)))  # Set current value
+        flipud_layout.addWidget(self.flipud_checkbox)
         layout.addLayout(flipud_layout)
 
         # Fliplr input
         fliplr_layout = QHBoxLayout()
-        fliplr_layout.addWidget(QLabel("Flip Left-Right (0 or 1):"))
-        self.fliplr_spinbox = QSpinBox()
-        self.fliplr_spinbox.setRange(0, 1)
-        self.fliplr_spinbox.setValue(current_settings.get("fliplr", 0))  # Set current value
-        fliplr_layout.addWidget(self.fliplr_spinbox)
+        fliplr_layout.addWidget(QLabel("Flip Left-Right:"))
+        self.fliplr_checkbox = QCheckBox()
+        self.fliplr_checkbox.setChecked(bool(current_settings.get("fliplr", False)))  # Set current value
+        fliplr_layout.addWidget(self.fliplr_checkbox)
         layout.addLayout(fliplr_layout)
 
         # Transpose input
         transpose_layout = QHBoxLayout()
-        transpose_layout.addWidget(QLabel("Transpose (0 or 1):"))
-        self.transpose_spinbox = QSpinBox()
-        self.transpose_spinbox.setRange(0, 1)
-        self.transpose_spinbox.setValue(current_settings.get("transpose", 0))  # Set current value
-        transpose_layout.addWidget(self.transpose_spinbox)
+        transpose_layout.addWidget(QLabel("Transpose:"))
+        self.transpose_checkbox = QCheckBox()
+        self.transpose_checkbox.setChecked(bool(current_settings.get("transpose", False)))  # Set current value
+        transpose_layout.addWidget(self.transpose_checkbox)
         layout.addLayout(transpose_layout)
 
         # Buttons
@@ -167,7 +164,7 @@ class DiffractionFlipsDialog(QDialog):
 
     def get_values(self):
         return {
-            "flipud": self.flipud_spinbox.value(),
-            "fliplr": self.fliplr_spinbox.value(),
-            "transpose": self.transpose_spinbox.value(),
+            "flipud": self.flipud_checkbox.isChecked(),
+            "fliplr": self.fliplr_checkbox.isChecked(),
+            "transpose": self.transpose_checkbox.isChecked(),
         }

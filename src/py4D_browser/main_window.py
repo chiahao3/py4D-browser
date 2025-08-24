@@ -139,9 +139,9 @@ class DataViewer(QMainWindow):
 
         # Initialize flip settings
         self.flip_settings = {
-            "flipud": 0,
-            "fliplr": 0,
-            "transpose": 0,
+            "flipud": False,
+            "fliplr": False,
+            "transpose": False,
         }        
 
     def setup_menus(self):
