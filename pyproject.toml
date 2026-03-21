@@ -3,12 +3,12 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "py4D_browser"
-version = "1.3.1"
+name = "viewer4d"
+version = "0.1.0"
 authors = [
-  { name="Steven Zeltmann", email="steven.zeltmann@lbl.gov" },
+  { name = "Chia-Hao Lee" },
 ]
-description = "A 4D-STEM data browser built on py4DSTEM."
+description = "Fast 4D-STEM browser with PyTorch GPU acceleration. Forked from py4D-browser (Steven Zeltmann, LBL)."
 readme = "README.md"
 requires-python = ">=3.11"
 classifiers = [
@@ -16,23 +16,36 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-  "py4dstem >= 0.14.9",
-  "emdfile >= 0.0.11",
   "h5py",
-  "numpy >= 1.19",
-  "matplotlib >= 3.2.2",
+  "numpy >= 1.21",
+  "matplotlib >= 3.4",
   "platformdirs",
-  "PyQt5 >= 5.10",
-  "pyqtgraph >= 0.11",
+  "PyQt5 >= 5.15",
+  "pyqtgraph >= 0.13",
   "sigfig",
+  "tqdm",
+  "scikit-image",
+  "rosettasciio[all]",
+  "tifffile",
 ]
 
+[project.optional-dependencies]
+# GPU acceleration for tcBF / acBF / iCOM (strongly recommended)
+torch = ["torch"]
+full  = ["viewer4d[torch]"]
+
 [project.scripts]
-py4DGUI = "py4D_browser.runGUI:launch"
+4dviewer = "viewer4d.runGUI:launch"
+
+[project.entry-points."viewer4d.plugins"]
+calibration = "viewer4d_plugin.calibration_plugin"
+tcbf        = "viewer4d_plugin.tcBF_plugin"
+acbf        = "viewer4d_plugin.acBF_plugin"
+ptyrad      = "viewer4d_plugin.ptyrad_plugin"
 
 [project.urls]
-"Homepage" = "https://github.com/py4dstem/py4D-browser"
-"Bug Tracker" = "https://github.com/py4dstem/py4D-browser/issues"
+"Homepage"    = "https://github.com/chiahao3/py4D-browser"
+"Bug Tracker" = "https://github.com/chiahao3/py4D-browser/issues"
 
 [tool.setuptools]
 include-package-data = true
@@ -41,4 +54,4 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-py4D_browser = ["*.png"]
+viewer4d = ["*.png"]

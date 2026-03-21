@@ -1,0 +1,1 @@
+from viewer4d_plugin.ptyrad_plugin.ptyrad_plugin import PtyRADPlugin
